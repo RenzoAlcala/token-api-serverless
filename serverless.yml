@@ -1,0 +1,52 @@
+service: fast-notes
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: us-east-1
+  apiName: token${opt:stage}
+  stage: ${opt:stage}
+  environment:
+    REDIS_URL: redis://tokenredis-0001-001.frr542.0001.use1.cache.amazonaws.com:6379
+
+plugins:
+  - serverless-offline
+  - serverless-plugin-reducer
+  - serverless-plugin-typescript
+  
+package:
+  individually: true
+
+custom:
+  security_group_id: sg-0bd7a037a831ac3d5
+  subnet_id_1: subnet-0bca86ca27dadb9f6
+  subnet_id_2: subnet-05dbe68fd7a277a1e
+
+functions:
+  createToken:
+    handler: handler.createToken
+    events:
+      - http:
+          path: v1/token
+          method: post
+          cors: true
+    vpc:
+      securityGroupIds:
+        - ${self:custom.security_group_id}
+      subnetIds:
+        - ${self:custom.subnet_id_1}
+        - ${self:custom.subnet_id_2}
+
+  getToken:
+    handler: handler.getToken
+    events:
+      - http:
+          path: v1/token/{token}
+          method: get
+          cors: true
+    vpc:
+      securityGroupIds:
+        - ${self:custom.security_group_id}
+      subnetIds:
+        - ${self:custom.subnet_id_1}
+        - ${self:custom.subnet_id_2}
