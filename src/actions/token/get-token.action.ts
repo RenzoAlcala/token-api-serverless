@@ -14,14 +14,12 @@ import DefaultException from '../../model/exception/default-exception.model';
 export const getToken = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
 
   try {
-    console.log(`event.body ${JSON.stringify(event.pathParameters)}`)
     if (!event.pathParameters) {
       return new ResponseModel({}, StatusCode.ERROR, Response.GET_TOKEN_VALIDATION_FAIL).generate();
     }
 
     const requestData = event.pathParameters;
     const validationRequestResult = validate(requestData);
-    console.log(`validationRequestResult ${JSON.stringify(validationRequestResult)}`);
     if (validationRequestResult.error) {
       return new ResponseModel(validationRequestResult, StatusCode.ERROR, Response.GET_TOKEN_VALIDATION_FAIL).generate();
     }

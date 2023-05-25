@@ -39,14 +39,8 @@
     "typescript": "^5.0.4"
   },
   "scripts": {
-    "deploy": "NODE_ENV=production sls deploy",
-    "deploy-staging": "NODE_ENV=staging sls deploy",
-    "deploy-develop": "NODE_ENV=develop sls deploy",
-    "local": "node cli.js",
-    "invoke": "sls invoke local -f hello -p test-data.json",
-    "debug": "sls offline start --stage DESA --verbose",
-    "test": "jest",
-    "lint": "eslint . --ext .ts"
+    "build": "tsc --build",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
